@@ -1044,6 +1044,10 @@ button {
   .navbar-nav { gap: 15px; }
 }
 
+.mobile-signin {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .navbar-nav { 
     display: none; 
@@ -1061,6 +1065,32 @@ button {
   
   .navbar-nav.open {
     display: flex;
+  }
+
+  .mobile-signin {
+    display: block;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--gray);
+  }
+
+  .dropdown-menu {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    padding: 10px 0 0 20px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dropdown-menu a {
+    padding: 5px 0;
   }
 
   .hamburger { display: flex; }

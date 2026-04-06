@@ -81,8 +81,33 @@ export default function Navbar() {
                     {link.label}
                   </Link>
                 )}
+                {link.children && (
+                  <div className="dropdown-menu">
+                    {link.children.map((child) => (
+                      <Link
+                        key={child.label}
+                        href={child.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={isActive(child.href) ? "active" : ""}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </li>
             ))}
+            {!isLoggedIn && (
+              <li className="mobile-signin">
+                <Link
+                  href="/login"
+                  className={isActive("/login") ? "active" : ""}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Sign In
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
 
@@ -103,7 +128,7 @@ export default function Navbar() {
                </Link>
             </div>
           ) : (
-            <Link href="/login" className="nav-actions" style={{ 
+            <Link href="/register" className="nav-actions" style={{ 
               fontFamily: "Montserrat, sans-serif", 
               fontWeight: 800, 
               fontSize: "0.75rem", 
@@ -113,7 +138,7 @@ export default function Navbar() {
               borderRadius: "50px",
               border: "1px solid #ddd"
             }}>
-              SIGN IN
+              SIGN UP
             </Link>
           )}
           <Link href="/donate" className="btn-donate" style={{ padding: "10px 20px", fontSize: "0.75rem" }}>
