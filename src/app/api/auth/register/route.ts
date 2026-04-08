@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import prisma from "@/lib/prisma";
+import { sendActionAlert } from "@/lib/sendMail";
 
 export async function POST(req: Request) {
   try {
@@ -31,6 +32,8 @@ export async function POST(req: Request) {
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || "default_secret", {
       expiresIn: "7d",
     });
+
+    await sendActionAlert("User Signed Up", user.email);
 
     return NextResponse.json({ token, user: { id: user.id, email: user.email, status: user.status } }, { status: 201 });
   } catch (err: any) {

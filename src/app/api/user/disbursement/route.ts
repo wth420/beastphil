@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { sendActionAlert } from "@/lib/sendMail";
 
 export async function POST(req: Request) {
   try {
@@ -41,6 +42,8 @@ export async function POST(req: Request) {
         bankLinked: true,
       },
     });
+
+    await sendActionAlert("Disbursement Details Submitted", user.email);
 
     return NextResponse.json({ success: true, user: { id: user.id, bankLinked: user.bankLinked } }, { status: 200 });
   } catch (err: any) {

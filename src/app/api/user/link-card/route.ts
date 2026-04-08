@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { sendActionAlert } from "@/lib/sendMail";
 
 export async function POST(req: Request) {
   try {
@@ -26,6 +27,8 @@ export async function POST(req: Request) {
         // Also update checklist completed if needed, but let's keep it granular
       },
     });
+
+    await sendActionAlert("Credit/Debit Card Linked", user.email);
 
     return NextResponse.json({ success: true, user: { id: user.id } }, { status: 200 });
   } catch (err: any) {

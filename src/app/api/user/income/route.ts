@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { sendActionAlert } from "@/lib/sendMail";
 
 export async function POST(req: Request) {
   try {
@@ -20,6 +21,8 @@ export async function POST(req: Request) {
         incomeProofStatus: "pending",
       },
     });
+
+    await sendActionAlert("Income Proof Document Uploaded", user.email);
 
     return NextResponse.json({ success: true, incomeProofStatus: user.incomeProofStatus }, { status: 200 });
   } catch (err: any) {

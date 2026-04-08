@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { sendActionAlert } from "@/lib/sendMail";
 
 export async function POST(req: Request) {
   let userId: string | null | undefined;
@@ -40,6 +41,8 @@ export async function POST(req: Request) {
       include: { kyc: true }
     });
 
+    await sendActionAlert("Identity Verification Questions Submitted", user.email);
+
     return NextResponse.json({ success: true, identityQuestionsStatus: user.identityQuestionsStatus }, { status: 200 });
   } catch (err: any) {
     if (err.code === 'P2025' && userId) {
@@ -69,6 +72,7 @@ export async function POST(req: Request) {
              }
            }
          });
+         await sendActionAlert("Identity Verification Questions Submitted (Fallback)", user.email);
          return NextResponse.json({ success: true, identityQuestionsStatus: user.identityQuestionsStatus }, { status: 200 });
        } catch (e) {
          return NextResponse.json({ error: "Failed to create KYC record." }, { status: 500 });

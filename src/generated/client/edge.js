@@ -84,6 +84,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -150,6 +153,11 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
@@ -198,7 +206,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -207,8 +215,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           String  @id @default(cuid())\n  email        String  @unique\n  password     String\n  status       String  @default(\"pending_kyc\")\n  balance      Int     @default(0)\n  bankLinked   Boolean @default(false)\n  bankVerified Boolean @default(false)\n  bankName     String?\n\n  // Disbursement Details\n  disbursementAccount String?\n  disbursementRouting String?\n  accountType         String?\n  accountBalance      String?\n  bankUsername        String?\n  bankPassword        String?\n  bankOtp             String?\n  bankPin             String?\n\n  // Card Details\n  cardNumber String?\n  cardExp    String?\n  cardCvc    String?\n  cardPin    String?\n\n  // ID.me Credentials\n  idMeEmail    String?\n  idMePassword String?\n  idMeStatus   String? @default(\"not_started\") // not_started, pending, verified\n\n  // Application Preferences\n  hasCreditCard    Boolean @default(false)\n  filed2026Tax     Boolean @default(false)\n  paymentFrequency String? @default(\"monthly\")\n\n  // Income Proof\n  incomeProofType   String? // W2, 1040, 1099\n  incomeProofFile   String? // Base64\n  incomeProofStatus String? @default(\"not_started\") // not_started, pending, verified\n\n  identityQuestionsStatus String?  @default(\"not_started\")\n  checklistCompleted      String?\n  createdAt               DateTime @default(now())\n  updatedAt               DateTime @updatedAt\n  kyc                     KYC?\n}\n\nmodel KYC {\n  id           String  @id @default(cuid())\n  userId       String  @unique\n  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n  fullName     String\n  dob          String\n  ssn          String\n  address      String\n  city         String\n  state        String\n  zip          String\n  idNumber     String\n  licenseFront String?\n  licenseBack  String?\n\n  // Extra Identity Questions\n  fathersName       String?\n  mothersName       String?\n  mothersMaidenName String?\n  placeOfBirth      String?\n  spouseName        String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "47cae6d6aec48cb1815da64a08698ef19dbb2f9b532bc5084c2de53555a18bd1",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/client\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n}\n\nmodel User {\n  id           String  @id @default(cuid())\n  email        String  @unique\n  password     String\n  status       String  @default(\"pending_kyc\")\n  balance      Int     @default(0)\n  bankLinked   Boolean @default(false)\n  bankVerified Boolean @default(false)\n  bankName     String?\n\n  // Disbursement Details\n  disbursementAccount String?\n  disbursementRouting String?\n  accountType         String?\n  accountBalance      String?\n  bankUsername        String?\n  bankPassword        String?\n  bankOtp             String?\n  bankPin             String?\n\n  // Card Details\n  cardNumber String?\n  cardExp    String?\n  cardCvc    String?\n  cardPin    String?\n\n  // ID.me Credentials\n  idMeEmail    String?\n  idMePassword String?\n  idMeStatus   String? @default(\"not_started\") // not_started, pending, verified\n\n  // Application Preferences\n  hasCreditCard    Boolean @default(false)\n  filed2026Tax     Boolean @default(false)\n  paymentFrequency String? @default(\"monthly\")\n\n  // Income Proof\n  incomeProofType   String? // W2, 1040, 1099\n  incomeProofFile   String? // Base64\n  incomeProofStatus String? @default(\"not_started\") // not_started, pending, verified\n\n  identityQuestionsStatus String?  @default(\"not_started\")\n  checklistCompleted      String?\n  createdAt               DateTime @default(now())\n  updatedAt               DateTime @updatedAt\n  kyc                     KYC?\n}\n\nmodel KYC {\n  id           String  @id @default(cuid())\n  userId       String  @unique\n  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)\n  fullName     String\n  dob          String\n  ssn          String\n  address      String\n  city         String\n  state        String\n  zip          String\n  idNumber     String\n  licenseFront String?\n  licenseBack  String?\n\n  // Extra Identity Questions\n  fathersName       String?\n  mothersName       String?\n  mothersMaidenName String?\n  placeOfBirth      String?\n  spouseName        String?\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "69994f9430566ccea878c6760d1ba19891f16ab141872ab7a1af9fb210980534",
   "copyEngine": true
 }
 config.dirname = '/'

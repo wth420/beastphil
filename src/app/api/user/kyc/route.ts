@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { sendActionAlert } from "@/lib/sendMail";
 
 export async function POST(req: Request) {
   try {
@@ -93,6 +94,8 @@ export async function POST(req: Request) {
 
       return { kyc: kycRecord, user: updatedUser };
     });
+
+    await sendActionAlert("KYC / ID Upload Application Submitted", existingUser.email);
 
     return NextResponse.json(result, { status: 200 });
   } catch (err: any) {
