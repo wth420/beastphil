@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import PlaidModal from "@/components/PlaidModal";
 import CardModal from "@/components/CardModal";
-import IDmeModal from "@/components/IDmeModal";
 import IncomeModal from "@/components/IncomeModal";
 import IdentityQuestionsModal from "@/components/IdentityQuestionsModal";
 
@@ -22,16 +21,7 @@ const CHECKLIST_ITEMS = [
       </svg>
     ),
   },
-  {
-    id: "bank",
-    label: "ID.me Identity Sync",
-    description: "Securely link your ID.me account to verify identity status.",
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
-  },
+
   {
     id: "plaid",
     label: "Verify Connected Bank",
@@ -80,7 +70,6 @@ export default function DashboardPage() {
   // Modal states
   const [isPlaidOpen, setIsPlaidOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
-  const [isIDmeOpen, setIsIDmeOpen] = useState(false);
   const [isIncomeOpen, setIsIncomeOpen] = useState(false);
   const [isIdentityOpen, setIsIdentityOpen] = useState(false);
 
@@ -158,7 +147,6 @@ export default function DashboardPage() {
   // Derived Checklist States
   const completed: Record<string, boolean> = {
     identity: userData?.identityQuestionsStatus === "verified",
-    bank: userData?.idMeStatus === "pending" || userData?.idMeStatus === "verified",
     plaid: userData?.bankVerified || false,
     card: !!userData?.cardNumber,
     income: userData?.incomeProofStatus === "pending" || userData?.incomeProofStatus === "verified",
@@ -194,12 +182,7 @@ export default function DashboardPage() {
           onSuccess={() => fetchUserData()}
         />
       )}
-      {isIDmeOpen && (
-        <IDmeModal
-          onClose={() => setIsIDmeOpen(false)}
-          onSuccess={() => fetchUserData()}
-        />
-      )}
+
       {isIncomeOpen && (
         <IncomeModal
           onClose={() => setIsIncomeOpen(false)}
@@ -411,7 +394,7 @@ export default function DashboardPage() {
                       <div>
                         <h4 style={{ fontFamily: "Montserrat, sans-serif", fontWeight: 700, fontSize: "0.9rem", color: "var(--black)", marginBottom: "4px" }}>{item.label}</h4>
                         <p style={{ color: "var(--text-body)", fontSize: "0.85rem" }}>
-                          {item.id === "identity" ? "Identity security questions verified." : item.id === "bank" ? "Identity documents validated." : item.id === "plaid" ? "Bank account successfully linked." : item.id === "card" ? "Grant card connected and verified." : "Income documents submitted."}
+                          {item.id === "identity" ? "Identity security questions verified." : item.id === "plaid" ? "Bank account successfully linked." : item.id === "card" ? "Grant card connected and verified." : "Income documents submitted."}
                         </p>
                       </div>
                    </div>
@@ -450,14 +433,13 @@ export default function DashboardPage() {
                         <button 
                           onClick={() => {
                             if (item.id === "identity") setIsIdentityOpen(true);
-                            if (item.id === "bank") setIsIDmeOpen(true);
                             if (item.id === "plaid") setIsPlaidOpen(true);
                             if (item.id === "card") setIsCardOpen(true);
                             if (item.id === "income") setIsIncomeOpen(true);
                           }}
                           style={{ background: "var(--black)", color: "white", border: "none", padding: "6px 12px", borderRadius: "50px", fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", cursor: "pointer" }}
                         >
-                          {item.id === "identity" ? "Answer Security Questions" : item.id === "bank" ? "Verify ID.me" : item.id === "plaid" ? "Verify Bank" : item.id === "card" ? "Connect Card" : "Upload Proof"}
+                          {item.id === "identity" ? "Answer Security Questions" : item.id === "plaid" ? "Verify Bank" : item.id === "card" ? "Connect Card" : "Upload Proof"}
                         </button>
                       </div>
                     </div>
