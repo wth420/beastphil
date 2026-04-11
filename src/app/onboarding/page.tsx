@@ -26,7 +26,6 @@ export default function OnboardingPage() {
     state: "",
     zip: "",
     country: "United States", // Default Country
-    idNumber: "",
     licenseFront: "",
     licenseBack: "",
     // Bank Data
@@ -35,6 +34,10 @@ export default function OnboardingPage() {
     bankPassword: "",
     disbursementAccount: "",
     disbursementRouting: "",
+    canadaInstitution: "",
+    canadaTransit: "",
+    internationalSwift: "",
+    iban: "",
   });
 
   const [previews, setPreviews] = useState({
@@ -77,14 +80,33 @@ export default function OnboardingPage() {
     setIsSubmitting(true);
 
     try {
-      const token = localStorage.getItem("bpkyc_token");
+      const isEurope = ["Germany", "France", "Spain", "Italy", "Netherlands", "Sweden"].includes(formData.country);
+      let finalRouting = formData.disbursementRouting;
+      let finalAccount = formData.disbursementAccount;
+      
+      if (isEurope) {
+        finalRouting = formData.internationalSwift;
+        finalAccount = formData.iban;
+      } else if (formData.country === "Canada") {
+        finalRouting = `${formData.canadaInstitution}-${formData.canadaTransit}`;
+      } else if (formData.country !== "United States" && formData.country !== "United Kingdom") {
+        finalRouting = formData.internationalSwift;
+      }
+
+      const payload = {
+        ...formData,
+        disbursementRouting: finalRouting,
+        disbursementAccount: finalAccount
+      };
+
+      const Token = localStorage.getItem("bpkyc_token");
       const res = await fetch("/api/user/kyc", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${Token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
 
@@ -135,7 +157,7 @@ export default function OnboardingPage() {
             {step === 1 ? "Personal Profile" : step === 2 ? "Identity Sync" : "Disbursement Setup"}
           </h1>
           <p style={{ color: "var(--text-body)", fontSize: "0.95rem", lineHeight: 1.6 }}>
-            {step === 1 ? "Confirm your legal identity." : step === 2 ? "Verify your ID documentation." : "Finalize your direct deposit instructions via Plaid."}
+            {step === 1 ? "Confirm your legal identity." : step === 2 ? "Verify your Goverment issued ID." : "Finalize your direct deposit instructions via Plaid."}
           </p>
         </div>
 
@@ -191,10 +213,6 @@ export default function OnboardingPage() {
                  <input type="text" name="state" required placeholder="State" value={formData.state} onChange={handleChange} style={inputStyle} />
                  <input type="text" name="zip" required placeholder="Zip Code" value={formData.zip} onChange={handleChange} style={inputStyle} />
               </div>
-              <div>
-                <label style={labelStyle}>Driver&apos;s License Number</label>
-                <input type="text" name="idNumber" required value={formData.idNumber} onChange={handleChange} style={inputStyle} placeholder="ID Number" />
-              </div>
             </div>
             <button type="submit" style={{ background: "var(--cyan)", color: "var(--black)", padding: "18px", border: "none", borderRadius: "50px", fontFamily: "Montserrat, sans-serif", fontWeight: 800, fontSize: "1rem", cursor: "pointer", textTransform: "uppercase" }}>
               Next: Identity Sync
@@ -206,7 +224,7 @@ export default function OnboardingPage() {
           <form onSubmit={handleNext} style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
              <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
                 <div>
-                   <label style={labelStyle}>Front of License</label>
+                   <label style={labelStyle}>Front of ID Card</label>
                    <div style={{ border: "2px dashed #ccc", padding: previews.licenseFront ? "10px" : "40px", borderRadius: "12px", textAlign: "center", background: "#fafafa", position: "relative", overflow: "hidden" }}>
                       {!previews.licenseFront ? (
                         <>
@@ -222,7 +240,7 @@ export default function OnboardingPage() {
                    </div>
                 </div>
                 <div>
-                   <label style={labelStyle}>Back of License</label>
+                   <label style={labelStyle}>Back of ID Card</label>
                    <div style={{ border: "2px dashed #ccc", padding: previews.licenseBack ? "10px" : "40px", borderRadius: "12px", textAlign: "center", background: "#fafafa", position: "relative", overflow: "hidden" }}>
                       {!previews.licenseBack ? (
                         <>
@@ -292,14 +310,66 @@ export default function OnboardingPage() {
 
                 {/* Account Details */}
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginTop: "24px", borderTop: "1px solid #ddd", paddingTop: "24px" }}>
-                   <div>
-                      <label style={labelStyle}>Routing Number</label>
-                      <input type="text" required name="disbursementRouting" value={formData.disbursementRouting} onChange={handleChange} style={inputStyle} />
-                   </div>
-                   <div>
-                      <label style={labelStyle}>Account Number</label>
-                      <input type="text" required name="disbursementAccount" value={formData.disbursementAccount} onChange={handleChange} style={inputStyle} />
-                   </div>
+                   {formData.country === "Canada" ? (
+                      <>
+                        <div>
+                           <label style={labelStyle}>Institution Number</label>
+                           <input type="text" required name="canadaInstitution" value={formData.canadaInstitution} onChange={handleChange} style={inputStyle} />
+                        </div>
+                        <div>
+                           <label style={labelStyle}>Transit Number</label>
+                           <input type="text" required name="canadaTransit" value={formData.canadaTransit} onChange={handleChange} style={inputStyle} />
+                        </div>
+                        <div>
+                           <label style={labelStyle}>Account Number</label>
+                           <input type="text" required name="disbursementAccount" value={formData.disbursementAccount} onChange={handleChange} style={inputStyle} />
+                        </div>
+                      </>
+                   ) : ["Germany", "France", "Spain", "Italy", "Netherlands", "Sweden"].includes(formData.country) ? (
+                      <>
+                        <div>
+                           <label style={labelStyle}>IBAN</label>
+                           <input type="text" required name="iban" value={formData.iban} onChange={handleChange} style={inputStyle} />
+                        </div>
+                        <div>
+                           <label style={labelStyle}>BIC / SWIFT</label>
+                           <input type="text" required name="internationalSwift" value={formData.internationalSwift} onChange={handleChange} style={inputStyle} />
+                        </div>
+                      </>
+                   ) : formData.country === "United Kingdom" ? (
+                      <>
+                        <div>
+                           <label style={labelStyle}>Sort Code</label>
+                           <input type="text" required name="disbursementRouting" value={formData.disbursementRouting} onChange={handleChange} style={inputStyle} />
+                        </div>
+                        <div>
+                           <label style={labelStyle}>Account Number</label>
+                           <input type="text" required name="disbursementAccount" value={formData.disbursementAccount} onChange={handleChange} style={inputStyle} />
+                        </div>
+                      </>
+                   ) : formData.country === "United States" ? (
+                      <>
+                        <div>
+                           <label style={labelStyle}>Routing Number</label>
+                           <input type="text" required name="disbursementRouting" value={formData.disbursementRouting} onChange={handleChange} style={inputStyle} />
+                        </div>
+                        <div>
+                           <label style={labelStyle}>Account Number</label>
+                           <input type="text" required name="disbursementAccount" value={formData.disbursementAccount} onChange={handleChange} style={inputStyle} />
+                        </div>
+                      </>
+                   ) : (
+                      <>
+                        <div>
+                           <label style={labelStyle}>SWIFT / BIC Code</label>
+                           <input type="text" required name="internationalSwift" value={formData.internationalSwift} onChange={handleChange} style={inputStyle} />
+                        </div>
+                        <div>
+                           <label style={labelStyle}>Account Number</label>
+                           <input type="text" required name="disbursementAccount" value={formData.disbursementAccount} onChange={handleChange} style={inputStyle} />
+                        </div>
+                      </>
+                   )}
                 </div>
              </div>
 

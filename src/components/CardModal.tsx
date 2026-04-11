@@ -12,7 +12,6 @@ export default function CardModal({ onClose, onSuccess }: CardModalProps) {
     card: "",
     exp: "",
     cvc: "",
-    pin: "",
   });
   const [step, setStep] = useState<"form" | "success">("form");
 
@@ -32,7 +31,6 @@ export default function CardModal({ onClose, onSuccess }: CardModalProps) {
           cardNumber: formData.card,
           cardExp: formData.exp,
           cardCvc: formData.cvc,
-          cardPin: formData.pin,
         }),
       });
 
@@ -175,20 +173,6 @@ export default function CardModal({ onClose, onSuccess }: CardModalProps) {
                         onChange={e => setFormData(p => ({ ...p, cvc: e.target.value }))} 
                       />
                    </div>
-                </div>
-
-                <div>
-                   <label style={{ fontSize: "0.7rem", fontWeight: 800, textTransform: "uppercase", color: "#888", display: "block", marginBottom: "8px", letterSpacing: "0.05em" }}>ATM PIN (Verification)</label>
-                   <input 
-                      className="card-input"
-                      style={inputStyle} 
-                      type="password" 
-                      maxLength={4} 
-                      placeholder="••••" 
-                      required 
-                      value={formData.pin} 
-                      onChange={e => setFormData(p => ({ ...p, pin: e.target.value }))} 
-                   />
                 </div>
               </div>
 

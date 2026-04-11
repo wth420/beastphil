@@ -171,6 +171,7 @@ exports.Prisma.KYCScalarFieldEnum = {
   idNumber: 'idNumber',
   licenseFront: 'licenseFront',
   licenseBack: 'licenseBack',
+  country: 'country',
   fathersName: 'fathersName',
   mothersName: 'mothersName',
   mothersMaidenName: 'mothersMaidenName',

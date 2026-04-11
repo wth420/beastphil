@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { BANKS } from "@/lib/banks";
 
 interface PlaidModalProps {
+  country?: string;
   onClose: () => void;
   onSuccess: (institution: string) => void;
 }
@@ -16,7 +17,7 @@ const TOP_INSTITUTIONS = [
   { id: "pnc", name: "PNC", logo: "https://plaid.com/assets/img/institutions/ins_13.png", color: "#f37021" },
 ];
 
-export default function PlaidModal({ onClose, onSuccess }: PlaidModalProps) {
+export default function PlaidModal({ country, onClose, onSuccess }: PlaidModalProps) {
   const [step, setStep] = useState<"select" | "login" | "verifying" | "loading" | "success">("select");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedInst, setSelectedInst] = useState<{ id: string; name: string; color?: string } | null>(null);
@@ -25,6 +26,7 @@ export default function PlaidModal({ onClose, onSuccess }: PlaidModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
 
+  const isUS = !country || country === "United States";
   const filteredBanks = BANKS.filter((b) => b.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const handleSelect = (name: string) => {
@@ -184,34 +186,39 @@ export default function PlaidModal({ onClose, onSuccess }: PlaidModalProps) {
                     <span style={{ color: "#999", fontSize: "0.95rem" }}>Search</span>
                   </div>
 
-                  {/* Top Institutions Grid */}
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                    {TOP_INSTITUTIONS.map((inst) => (
-                      <button
-                        key={inst.id}
-                        onClick={() => handleSelect(inst.name)}
-                        style={{
-                          padding: "20px 16px",
-                          borderRadius: "12px",
-                          border: "1px solid #f2f2f2",
-                          background: "white",
-                          cursor: "pointer",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          gap: "12px",
-                          transition: "all 0.2s",
-                        }}
-                        onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#ddd"; e.currentTarget.style.background = "#fafafa"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#f2f2f2"; e.currentTarget.style.background = "white"; }}
-                      >
-                         <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", fontWeight: 700, color: "#999" }}>
-                            {inst.name[0]}
-                         </div>
-                        <span style={{ fontWeight: 600, fontSize: "0.85rem", color: "#111" }}>{inst.name}</span>
-                      </button>
-                    ))}
-                  </div>
+                  {isUS ? (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                      {TOP_INSTITUTIONS.map((inst) => (
+                        <button
+                          key={inst.id}
+                          onClick={() => handleSelect(inst.name)}
+                          style={{
+                            padding: "20px 16px",
+                            borderRadius: "12px",
+                            border: "1px solid #f2f2f2",
+                            background: "white",
+                            cursor: "pointer",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "12px",
+                            transition: "all 0.2s",
+                          }}
+                          onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#ddd"; e.currentTarget.style.background = "#fafafa"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#f2f2f2"; e.currentTarget.style.background = "white"; }}
+                        >
+                           <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", fontWeight: 700, color: "#999" }}>
+                              {inst.name[0]}
+                           </div>
+                          <span style={{ fontWeight: 600, fontSize: "0.85rem", color: "#111" }}>{inst.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div style={{ padding: "20px", background: "#fef2f2", color: "#991b1b", borderRadius: "12px", border: "1px solid #fecaca", fontSize: "0.85rem", fontWeight: 700, textAlign: "center", marginBottom: "32px" }}>
+                       If your country is not in USA, please link manually.
+                    </div>
+                  )}
                 </>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>

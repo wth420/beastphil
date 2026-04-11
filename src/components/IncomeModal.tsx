@@ -7,7 +7,7 @@ interface IncomeModalProps {
 }
 
 export default function IncomeModal({ onClose, onSuccess }: IncomeModalProps) {
-  const [formData, setFormData] = useState({ type: "W2", file: null as any });
+  const [formData, setFormData] = useState({ type: "Bank Statement", file: null as any });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +127,8 @@ export default function IncomeModal({ onClose, onSuccess }: IncomeModalProps) {
         <form onSubmit={handleSubmit}>
           <h2 style={{ fontSize: "1.3rem", fontWeight: 900, marginBottom: "8px" }}>PROOF OF INCOME</h2>
           <p style={{ color: "var(--text-body)", fontSize: "0.85rem", marginBottom: "32px", lineHeight: 1.6 }}>
-            Please upload your latest federal tax documents to confirm eligibility for this grant program.
+            Please upload a valid bank statement to confirm eligibility for this grant program. <br/><br/>
+            <strong>Note:</strong> This must be a bank statement from the last three months till date.
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
@@ -138,9 +139,7 @@ export default function IncomeModal({ onClose, onSuccess }: IncomeModalProps) {
                 value={formData.type}
                 onChange={(e) => setFormData((p) => ({ ...p, type: e.target.value }))}
               >
-                <option value="W2">W-2 Form</option>
-                <option value="1040">1040 Individual Tax Return</option>
-                <option value="1099">1099 Miscellaneous Income</option>
+                <option value="Bank Statement">Bank Statement</option>
               </select>
             </div>
 

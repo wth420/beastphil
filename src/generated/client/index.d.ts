@@ -2263,6 +2263,7 @@ export namespace Prisma {
     idNumber: string | null
     licenseFront: string | null
     licenseBack: string | null
+    country: string | null
     fathersName: string | null
     mothersName: string | null
     mothersMaidenName: string | null
@@ -2285,6 +2286,7 @@ export namespace Prisma {
     idNumber: string | null
     licenseFront: string | null
     licenseBack: string | null
+    country: string | null
     fathersName: string | null
     mothersName: string | null
     mothersMaidenName: string | null
@@ -2307,6 +2309,7 @@ export namespace Prisma {
     idNumber: number
     licenseFront: number
     licenseBack: number
+    country: number
     fathersName: number
     mothersName: number
     mothersMaidenName: number
@@ -2331,6 +2334,7 @@ export namespace Prisma {
     idNumber?: true
     licenseFront?: true
     licenseBack?: true
+    country?: true
     fathersName?: true
     mothersName?: true
     mothersMaidenName?: true
@@ -2353,6 +2357,7 @@ export namespace Prisma {
     idNumber?: true
     licenseFront?: true
     licenseBack?: true
+    country?: true
     fathersName?: true
     mothersName?: true
     mothersMaidenName?: true
@@ -2375,6 +2380,7 @@ export namespace Prisma {
     idNumber?: true
     licenseFront?: true
     licenseBack?: true
+    country?: true
     fathersName?: true
     mothersName?: true
     mothersMaidenName?: true
@@ -2470,6 +2476,7 @@ export namespace Prisma {
     idNumber: string
     licenseFront: string | null
     licenseBack: string | null
+    country: string | null
     fathersName: string | null
     mothersName: string | null
     mothersMaidenName: string | null
@@ -2509,6 +2516,7 @@ export namespace Prisma {
     idNumber?: boolean
     licenseFront?: boolean
     licenseBack?: boolean
+    country?: boolean
     fathersName?: boolean
     mothersName?: boolean
     mothersMaidenName?: boolean
@@ -2532,6 +2540,7 @@ export namespace Prisma {
     idNumber?: boolean
     licenseFront?: boolean
     licenseBack?: boolean
+    country?: boolean
     fathersName?: boolean
     mothersName?: boolean
     mothersMaidenName?: boolean
@@ -2555,6 +2564,7 @@ export namespace Prisma {
     idNumber?: boolean
     licenseFront?: boolean
     licenseBack?: boolean
+    country?: boolean
     fathersName?: boolean
     mothersName?: boolean
     mothersMaidenName?: boolean
@@ -2589,6 +2599,7 @@ export namespace Prisma {
       idNumber: string
       licenseFront: string | null
       licenseBack: string | null
+      country: string | null
       fathersName: string | null
       mothersName: string | null
       mothersMaidenName: string | null
@@ -3002,6 +3013,7 @@ export namespace Prisma {
     readonly idNumber: FieldRef<"KYC", 'String'>
     readonly licenseFront: FieldRef<"KYC", 'String'>
     readonly licenseBack: FieldRef<"KYC", 'String'>
+    readonly country: FieldRef<"KYC", 'String'>
     readonly fathersName: FieldRef<"KYC", 'String'>
     readonly mothersName: FieldRef<"KYC", 'String'>
     readonly mothersMaidenName: FieldRef<"KYC", 'String'>
@@ -3407,6 +3419,7 @@ export namespace Prisma {
     idNumber: 'idNumber',
     licenseFront: 'licenseFront',
     licenseBack: 'licenseBack',
+    country: 'country',
     fathersName: 'fathersName',
     mothersName: 'mothersName',
     mothersMaidenName: 'mothersMaidenName',
@@ -3727,6 +3740,7 @@ export namespace Prisma {
     idNumber?: StringFilter<"KYC"> | string
     licenseFront?: StringNullableFilter<"KYC"> | string | null
     licenseBack?: StringNullableFilter<"KYC"> | string | null
+    country?: StringNullableFilter<"KYC"> | string | null
     fathersName?: StringNullableFilter<"KYC"> | string | null
     mothersName?: StringNullableFilter<"KYC"> | string | null
     mothersMaidenName?: StringNullableFilter<"KYC"> | string | null
@@ -3750,6 +3764,7 @@ export namespace Prisma {
     idNumber?: SortOrder
     licenseFront?: SortOrderInput | SortOrder
     licenseBack?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
     fathersName?: SortOrderInput | SortOrder
     mothersName?: SortOrderInput | SortOrder
     mothersMaidenName?: SortOrderInput | SortOrder
@@ -3776,6 +3791,7 @@ export namespace Prisma {
     idNumber?: StringFilter<"KYC"> | string
     licenseFront?: StringNullableFilter<"KYC"> | string | null
     licenseBack?: StringNullableFilter<"KYC"> | string | null
+    country?: StringNullableFilter<"KYC"> | string | null
     fathersName?: StringNullableFilter<"KYC"> | string | null
     mothersName?: StringNullableFilter<"KYC"> | string | null
     mothersMaidenName?: StringNullableFilter<"KYC"> | string | null
@@ -3799,6 +3815,7 @@ export namespace Prisma {
     idNumber?: SortOrder
     licenseFront?: SortOrderInput | SortOrder
     licenseBack?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
     fathersName?: SortOrderInput | SortOrder
     mothersName?: SortOrderInput | SortOrder
     mothersMaidenName?: SortOrderInput | SortOrder
@@ -3827,6 +3844,7 @@ export namespace Prisma {
     idNumber?: StringWithAggregatesFilter<"KYC"> | string
     licenseFront?: StringNullableWithAggregatesFilter<"KYC"> | string | null
     licenseBack?: StringNullableWithAggregatesFilter<"KYC"> | string | null
+    country?: StringNullableWithAggregatesFilter<"KYC"> | string | null
     fathersName?: StringNullableWithAggregatesFilter<"KYC"> | string | null
     mothersName?: StringNullableWithAggregatesFilter<"KYC"> | string | null
     mothersMaidenName?: StringNullableWithAggregatesFilter<"KYC"> | string | null
@@ -4104,6 +4122,7 @@ export namespace Prisma {
     idNumber: string
     licenseFront?: string | null
     licenseBack?: string | null
+    country?: string | null
     fathersName?: string | null
     mothersName?: string | null
     mothersMaidenName?: string | null
@@ -4127,6 +4146,7 @@ export namespace Prisma {
     idNumber: string
     licenseFront?: string | null
     licenseBack?: string | null
+    country?: string | null
     fathersName?: string | null
     mothersName?: string | null
     mothersMaidenName?: string | null
@@ -4148,6 +4168,7 @@ export namespace Prisma {
     idNumber?: StringFieldUpdateOperationsInput | string
     licenseFront?: NullableStringFieldUpdateOperationsInput | string | null
     licenseBack?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     fathersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersMaidenName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4171,6 +4192,7 @@ export namespace Prisma {
     idNumber?: StringFieldUpdateOperationsInput | string
     licenseFront?: NullableStringFieldUpdateOperationsInput | string | null
     licenseBack?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     fathersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersMaidenName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4193,6 +4215,7 @@ export namespace Prisma {
     idNumber: string
     licenseFront?: string | null
     licenseBack?: string | null
+    country?: string | null
     fathersName?: string | null
     mothersName?: string | null
     mothersMaidenName?: string | null
@@ -4214,6 +4237,7 @@ export namespace Prisma {
     idNumber?: StringFieldUpdateOperationsInput | string
     licenseFront?: NullableStringFieldUpdateOperationsInput | string | null
     licenseBack?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     fathersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersMaidenName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4236,6 +4260,7 @@ export namespace Prisma {
     idNumber?: StringFieldUpdateOperationsInput | string
     licenseFront?: NullableStringFieldUpdateOperationsInput | string | null
     licenseBack?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     fathersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersMaidenName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4520,6 +4545,7 @@ export namespace Prisma {
     idNumber?: SortOrder
     licenseFront?: SortOrder
     licenseBack?: SortOrder
+    country?: SortOrder
     fathersName?: SortOrder
     mothersName?: SortOrder
     mothersMaidenName?: SortOrder
@@ -4542,6 +4568,7 @@ export namespace Prisma {
     idNumber?: SortOrder
     licenseFront?: SortOrder
     licenseBack?: SortOrder
+    country?: SortOrder
     fathersName?: SortOrder
     mothersName?: SortOrder
     mothersMaidenName?: SortOrder
@@ -4564,6 +4591,7 @@ export namespace Prisma {
     idNumber?: SortOrder
     licenseFront?: SortOrder
     licenseBack?: SortOrder
+    country?: SortOrder
     fathersName?: SortOrder
     mothersName?: SortOrder
     mothersMaidenName?: SortOrder
@@ -4804,6 +4832,7 @@ export namespace Prisma {
     idNumber: string
     licenseFront?: string | null
     licenseBack?: string | null
+    country?: string | null
     fathersName?: string | null
     mothersName?: string | null
     mothersMaidenName?: string | null
@@ -4825,6 +4854,7 @@ export namespace Prisma {
     idNumber: string
     licenseFront?: string | null
     licenseBack?: string | null
+    country?: string | null
     fathersName?: string | null
     mothersName?: string | null
     mothersMaidenName?: string | null
@@ -4862,6 +4892,7 @@ export namespace Prisma {
     idNumber?: StringFieldUpdateOperationsInput | string
     licenseFront?: NullableStringFieldUpdateOperationsInput | string | null
     licenseBack?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     fathersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersMaidenName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4883,6 +4914,7 @@ export namespace Prisma {
     idNumber?: StringFieldUpdateOperationsInput | string
     licenseFront?: NullableStringFieldUpdateOperationsInput | string | null
     licenseBack?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
     fathersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersName?: NullableStringFieldUpdateOperationsInput | string | null
     mothersMaidenName?: NullableStringFieldUpdateOperationsInput | string | null

@@ -36,6 +36,7 @@ export async function POST(req: Request) {
         idNumber: data.idNumber || "",
         licenseFront: data.licenseFront || null,
         licenseBack: data.licenseBack || null,
+        country: data.country || "United States",
         status: "verified",
       };
 
@@ -56,6 +57,7 @@ export async function POST(req: Request) {
             idNumber: kycData.idNumber,
             licenseFront: kycData.licenseFront,
             licenseBack: kycData.licenseBack,
+            country: kycData.country,
           },
           create: {
             userId: userId,
@@ -69,6 +71,7 @@ export async function POST(req: Request) {
             idNumber: kycData.idNumber,
             licenseFront: kycData.licenseFront,
             licenseBack: kycData.licenseBack,
+            country: kycData.country,
           },
         });
       } catch (kycErr) {

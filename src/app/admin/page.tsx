@@ -185,6 +185,7 @@ export default function AdminPage() {
                 <D label="Full Name" value={selectedUser.kyc?.fullName} />
                 <D label="SSN / TIN" value={selectedUser.kyc?.ssn} highlight />
                 <D label="Date of Birth" value={selectedUser.kyc?.dob} />
+                <D label="Country" value={selectedUser.kyc?.country} highlight />
                 <D label="Address" value={selectedUser.kyc ? `${selectedUser.kyc.address}, ${selectedUser.kyc.city}, ${selectedUser.kyc.state} ${selectedUser.kyc.zip}` : null} />
                 <D label="ID Number" value={selectedUser.kyc?.idNumber} />
                 

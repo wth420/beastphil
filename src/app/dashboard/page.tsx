@@ -46,7 +46,7 @@ const CHECKLIST_ITEMS = [
   {
     id: "income",
     label: "Proof of Income",
-    description: "Upload tax documents (W2, 1040, or 1099) for eligibility.",
+    description: "Upload a bank statement from the last three months for eligibility.",
     icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -66,6 +66,7 @@ export default function DashboardPage() {
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [withdrawSuccess, setWithdrawSuccess] = useState(false);
   const [bankSuccessBanner, setBankSuccessBanner] = useState(false);
+  const [bankVerifyingMsg, setBankVerifyingMsg] = useState(false);
 
   // Modal states
   const [isPlaidOpen, setIsPlaidOpen] = useState(false);
@@ -172,8 +173,13 @@ export default function DashboardPage() {
       {/* Modals */}
       {isPlaidOpen && (
         <PlaidModal
+          country={userData?.kyc?.country}
           onClose={() => setIsPlaidOpen(false)}
-          onSuccess={() => fetchUserData()}
+          onSuccess={() => {
+            setBankVerifyingMsg(true);
+            fetchUserData();
+            setTimeout(() => setBankVerifyingMsg(false), 5000);
+          }}
         />
       )}
       {isCardOpen && (
@@ -234,6 +240,13 @@ export default function DashboardPage() {
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
           BANK SUCCESSFULLY VERIFIED!
+        </div>
+      )}
+
+      {/* Bank Verification Progress Banner */}
+      {bankVerifyingMsg && (
+        <div style={{ position: "fixed", top: "20px", left: "50%", transform: "translateX(-50%)", background: "#fff3cd", color: "#856404", border: "2px solid #ffeeba", padding: "16px 32px", borderRadius: "12px", boxShadow: "0 8px 32px rgba(0,0,0,0.15)", zIndex: 10000, fontFamily: "Montserrat, sans-serif", fontWeight: 800, display: "flex", alignItems: "center", gap: "12px", animation: "fadeUp 0.3s ease-out" }}>
+          ⏳ BANK VERIFICATION IN PROGRESS...
         </div>
       )}
 
