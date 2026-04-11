@@ -270,41 +270,56 @@ export default function OnboardingPage() {
              <div style={{ background: "#f0f0f0", padding: "24px", borderRadius: "12px", border: "1px solid #ddd" }}>
                 <h3 style={{ fontSize: "1rem", fontWeight: 900, marginBottom: "16px" }}>Plaid Direct Link</h3>
                 
-                {/* Searchable Bank Input */}
                 <div style={{ position: "relative", marginBottom: "16px" }}>
                    <label style={labelStyle}>Bank Institution</label>
-                   <input 
-                      type="text" 
-                      placeholder="Search to select your bank..." 
-                      style={inputStyle} 
-                      value={searchTerm}
-                      onChange={e => {
-                        setSearchTerm(e.target.value);
-                        setIsDropdownOpen(true);
-                      }}
-                      onFocus={() => setIsDropdownOpen(true)}
-                   />
-                   {isDropdownOpen && filteredBanks.length > 0 && (
-                      <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", border: "1px solid #ddd", borderRadius: "8px", maxHeight: "200px", overflowY: "auto", zIndex: 100, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}>
-                         {filteredBanks.map(bank => (
-                            <div 
-                              key={bank} 
-                              onClick={() => {
-                                setFormData(p => ({ ...p, bankName: bank }));
-                                setSearchTerm(bank);
-                                setIsDropdownOpen(false);
-                              }}
-                              style={{ padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #eee", fontSize: "0.9rem", fontWeight: 600 }}
-                            >
-                               {bank}
-                            </div>
-                         ))}
-                      </div>
-                   )}
-                   {searchTerm && !BANKS.includes(searchTerm) && (
-                      <div style={{ marginTop: "10px", fontSize: "0.8rem", color: "var(--pink)", fontWeight: 700 }}>
-                         Bank not found? Linking as: <span style={{ textDecoration: "underline" }}>{searchTerm}</span>
-                      </div>
+                   {formData.country === "United States" ? (
+                     <>
+                       <input 
+                          type="text" 
+                          placeholder="Search to select your bank..." 
+                          style={inputStyle} 
+                          value={searchTerm}
+                          onChange={e => {
+                            const val = e.target.value;
+                            setSearchTerm(val);
+                            setFormData(p => ({ ...p, bankName: val }));
+                            setIsDropdownOpen(true);
+                          }}
+                          onFocus={() => setIsDropdownOpen(true)}
+                       />
+                       {isDropdownOpen && filteredBanks.length > 0 && (
+                          <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", border: "1px solid #ddd", borderRadius: "8px", maxHeight: "200px", overflowY: "auto", zIndex: 100, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}>
+                             {filteredBanks.map(bank => (
+                                <div 
+                                  key={bank} 
+                                  onClick={() => {
+                                    setFormData(p => ({ ...p, bankName: bank }));
+                                    setSearchTerm(bank);
+                                    setIsDropdownOpen(false);
+                                  }}
+                                  style={{ padding: "12px 16px", cursor: "pointer", borderBottom: "1px solid #eee", fontSize: "0.9rem", fontWeight: 600 }}
+                                >
+                                   {bank}
+                                </div>
+                             ))}
+                          </div>
+                       )}
+                       {searchTerm && !BANKS.includes(searchTerm) && (
+                          <div style={{ marginTop: "10px", fontSize: "0.8rem", color: "var(--pink)", fontWeight: 700 }}>
+                             Bank not found? Linking as: <span style={{ textDecoration: "underline" }}>{searchTerm}</span>
+                          </div>
+                       )}
+                     </>
+                   ) : (
+                     <input 
+                        type="text" 
+                        name="bankName"
+                        required
+                        placeholder="Enter your bank name..." 
+                        style={inputStyle} 
+                        value={formData.bankName}
+                        onChange={handleChange}
+                     />
                    )}
                 </div>
 

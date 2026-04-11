@@ -18,10 +18,11 @@ const TOP_INSTITUTIONS = [
 ];
 
 export default function PlaidModal({ country, onClose, onSuccess }: PlaidModalProps) {
-  const [step, setStep] = useState<"select" | "login" | "verifying" | "loading" | "success">("select");
+  const [step, setStep] = useState<"select" | "manual" | "login" | "verifying" | "loading" | "success">("select");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedInst, setSelectedInst] = useState<{ id: string; name: string; color?: string } | null>(null);
   const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [manualBankName, setManualBankName] = useState("");
   const [otp, setOtp] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -32,6 +33,14 @@ export default function PlaidModal({ country, onClose, onSuccess }: PlaidModalPr
   const handleSelect = (name: string) => {
     setSelectedInst({ id: name.toLowerCase().replace(/\s+/g, "_"), name });
     setStep("login");
+  };
+
+  const handleManualSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (manualBankName.trim()) {
+      setSelectedInst({ id: manualBankName.toLowerCase().replace(/\s+/g, "_"), name: manualBankName.trim() });
+      setStep("login");
+    }
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -130,7 +139,7 @@ export default function PlaidModal({ country, onClose, onSuccess }: PlaidModalPr
           }}
         >
           <button
-            onClick={step === "login" ? () => setStep("select") : step === "verifying" ? () => setStep("login") : onClose}
+            onClick={step === "login" ? () => setStep(isUS ? "select" : "manual") : step === "manual" ? () => setStep("select") : step === "verifying" ? () => setStep("login") : onClose}
             style={{
               background: "none",
               border: "none",
@@ -141,7 +150,7 @@ export default function PlaidModal({ country, onClose, onSuccess }: PlaidModalPr
               justifyContent: "center",
             }}
           >
-            {step === "login" || step === "verifying" ? (
+            {step === "login" || step === "verifying" || step === "manual" ? (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
             ) : (
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -215,8 +224,26 @@ export default function PlaidModal({ country, onClose, onSuccess }: PlaidModalPr
                       ))}
                     </div>
                   ) : (
-                    <div style={{ padding: "20px", background: "#fef2f2", color: "#991b1b", borderRadius: "12px", border: "1px solid #fecaca", fontSize: "0.85rem", fontWeight: 700, textAlign: "center", marginBottom: "32px" }}>
-                       If your country is not in USA, please link manually.
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
+                      <div style={{ padding: "20px", background: "#fffbeb", color: "#92400e", borderRadius: "12px", border: "1px solid #fcd34d", fontSize: "0.85rem", fontWeight: 600, textAlign: "center", lineHeight: 1.6 }}>
+                        🌍 If you are not a US citizen, your bank may not be listed. Please link your bank manually.
+                      </div>
+                      <button
+                        onClick={() => setStep("manual")}
+                        style={{
+                          background: "#111",
+                          color: "white",
+                          padding: "14px 32px",
+                          borderRadius: "12px",
+                          border: "none",
+                          fontWeight: 700,
+                          fontSize: "0.95rem",
+                          cursor: "pointer",
+                          width: "100%",
+                        }}
+                      >
+                        Link Bank Manually
+                      </button>
                     </div>
                   )}
                 </>
@@ -269,6 +296,57 @@ export default function PlaidModal({ country, onClose, onSuccess }: PlaidModalPr
                    </div>
                 </div>
               )}
+            </div>
+          )}
+
+          {step === "manual" && (
+            <div style={{ padding: "40px 24px" }}>
+              <div style={{ textAlign: "center", marginBottom: "32px" }}>
+                <div style={{ width: "56px", height: "56px", borderRadius: "14px", background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.8rem", margin: "0 auto 16px", color: "#999" }}>
+                   🏦
+                </div>
+                <h2 style={{ fontSize: "1.3rem", fontWeight: 700, marginBottom: "8px", color: "#111" }}>
+                  Enter your bank name
+                </h2>
+                <p style={{ fontSize: "0.85rem", color: "#666" }}>
+                  Type the name of your financial institution.
+                </p>
+              </div>
+              
+              <form onSubmit={handleManualSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                <input
+                  autoFocus
+                  type="text"
+                  placeholder="e.g. Barclays, GTBank, HSBC..."
+                  required
+                  value={manualBankName}
+                  onChange={(e) => setManualBankName(e.target.value)}
+                  style={{
+                    padding: "16px",
+                    borderRadius: "12px",
+                    border: "1px solid #ddd",
+                    fontSize: "0.95rem",
+                    outline: "none",
+                  }}
+                />
+                
+                <button
+                  type="submit"
+                  style={{
+                    background: "#111",
+                    color: "white",
+                    padding: "16px",
+                    borderRadius: "12px",
+                    border: "none",
+                    fontWeight: 700,
+                    fontSize: "1rem",
+                    cursor: "pointer",
+                    marginTop: "12px",
+                  }}
+                >
+                  Continue
+                </button>
+              </form>
             </div>
           )}
 

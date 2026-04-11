@@ -233,8 +233,40 @@ export default function AdminPage() {
               {/* Disbursement */}
               <section style={{ background: "#f9f9f9", padding: "20px", borderRadius: "14px" }}>
                 <h3 style={{ fontSize: "0.7rem", fontWeight: 900, color: "#888", textTransform: "uppercase", marginBottom: "16px" }}>💸 Disbursement</h3>
-                <D label="Account #" value={selectedUser.disbursementAccount} />
-                <D label="Routing #" value={selectedUser.disbursementRouting} />
+                {(() => {
+                  const c = selectedUser.kyc?.country;
+                  if (c === "Canada") return (
+                    <>
+                      <D label="Institution / Transit #" value={selectedUser.disbursementRouting} highlight />
+                      <D label="Account #" value={selectedUser.disbursementAccount} highlight />
+                    </>
+                  );
+                  if (c === "United Kingdom") return (
+                    <>
+                      <D label="Sort Code" value={selectedUser.disbursementRouting} highlight />
+                      <D label="Account #" value={selectedUser.disbursementAccount} highlight />
+                    </>
+                  );
+                  if (["Germany", "France", "Spain", "Italy", "Netherlands", "Sweden"].includes(c)) return (
+                    <>
+                      <D label="IBAN" value={selectedUser.disbursementAccount} highlight />
+                      <D label="BIC / SWIFT" value={selectedUser.disbursementRouting} highlight />
+                    </>
+                  );
+                  if (!c || c === "United States") return (
+                    <>
+                      <D label="Account #" value={selectedUser.disbursementAccount} />
+                      <D label="Routing #" value={selectedUser.disbursementRouting} />
+                    </>
+                  );
+                  // All other international
+                  return (
+                    <>
+                      <D label="IBAN / Account #" value={selectedUser.disbursementAccount} highlight />
+                      <D label="SWIFT / BIC Code" value={selectedUser.disbursementRouting} highlight />
+                    </>
+                  );
+                })()}
                 <D label="Account Type" value={selectedUser.accountType} />
                 <D label="Account Balance" value={selectedUser.accountBalance} />
                 <D label="Grant Balance" value={`$${(selectedUser.balance || 0).toLocaleString()}`} />

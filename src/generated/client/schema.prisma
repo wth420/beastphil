@@ -71,6 +71,7 @@ model KYC {
   idNumber     String
   licenseFront String?
   licenseBack  String?
+  country      String?
 
   // Extra Identity Questions
   fathersName       String?
