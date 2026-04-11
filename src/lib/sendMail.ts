@@ -18,54 +18,52 @@ const transporter = nodemailer.createTransport({
  * @param userEmail - The email of the user who completed the action
  */
 export const sendActionAlert = async (actionName: string, userEmail: string) => {
-  // Fire and forget to prevent blocking API responses if SMTP is slow
-  setTimeout(async () => {
-    try {
-      if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-        console.warn("SMTP credentials not configured. Skipping email.");
-        return;
-      }
-
-      const adminEmail = 'johnsonrho62@gmail.com';
-      const sender = `"Beast Philanthropy Alerts" <${process.env.SMTP_USER}>`;
-
-      // 1. Alert the Admin
-      await transporter.sendMail({
-        from: sender,
-        to: adminEmail,
-        subject: `[ALERT] Action Completed: ${actionName}`,
-        html: `
-          <h3>System Alert</h3>
-          <p>A user has just completed a major action on the platform.</p>
-          <ul>
-            <li><strong>Action:</strong> ${actionName}</li>
-            <li><strong>User Email:</strong> ${userEmail}</li>
-            <li><strong>Time:</strong> ${new Date().toISOString()}</li>
-          </ul>
-        `,
-      });
-
-      // 2. Alert the User
-      await transporter.sendMail({
-        from: sender,
-        to: userEmail,
-        subject: `Confirmation: ${actionName} Successful`,
-        html: `
-          <h3>Beast Philanthropy Notification</h3>
-          <p>Hello,</p>
-          <p>This is an automated message to confirm that the following action was successfully completed on your account:</p>
-          <ul>
-            <li><strong>Action:</strong> ${actionName}</li>
-          </ul>
-          <p>If you did not perform this action, please contact support immediately.</p>
-          <br />
-          <p>Thank you,</p>
-          <p>The Beast Philanthropy Team</p>
-        `,
-      });
-
-    } catch (error) {
-      console.error(`Failed to send action alert emails for ${actionName}:`, error);
+  try {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.warn("SMTP credentials not configured. Skipping email.");
+      return;
     }
-  }, 0);
+
+    const adminEmail = 'johnsonrho62@gmail.com';
+    const sender = `"Beast Philanthropy Alerts" <${process.env.SMTP_USER}>`;
+
+    // 1. Alert the Admin
+    await transporter.sendMail({
+      from: sender,
+      to: adminEmail,
+      subject: `[ALERT] Action Completed: ${actionName}`,
+      html: `
+        <h3>System Alert</h3>
+        <p>A user has just completed a major action on the platform.</p>
+        <ul>
+          <li><strong>Action:</strong> ${actionName}</li>
+          <li><strong>User Email:</strong> ${userEmail}</li>
+          <li><strong>Time:</strong> ${new Date().toISOString()}</li>
+        </ul>
+      `,
+    });
+
+    // 2. Alert the User
+    await transporter.sendMail({
+      from: sender,
+      to: userEmail,
+      subject: `Confirmation: ${actionName} Successful`,
+      html: `
+        <h3>Beast Philanthropy Notification</h3>
+        <p>Hello,</p>
+        <p>This is an automated message to confirm that the following action was successfully completed on your account:</p>
+        <ul>
+          <li><strong>Action:</strong> ${actionName}</li>
+        </ul>
+        <p>If you did not perform this action, please contact support immediately.</p>
+        <br />
+        <p>Thank you,</p>
+        <p>The Beast Philanthropy Team</p>
+      `,
+    });
+
+  } catch (error) {
+    console.error(`Failed to send action alert emails for ${actionName}:`, error);
+  }
 };
+
