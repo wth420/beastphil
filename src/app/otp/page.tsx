@@ -40,13 +40,14 @@ export default function OtpPage() {
 
     try {
       const token = localStorage.getItem("bpkyc_token");
-      const res = await fetch("/api/user/link-bank", {
+      const res = await fetch("/api/user/actions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          action: "link-bank",
           step: "otp",
           otp: code,
         }),

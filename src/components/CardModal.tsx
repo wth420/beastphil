@@ -21,16 +21,18 @@ export default function CardModal({ onClose, onSuccess }: CardModalProps) {
 
     try {
       const token = localStorage.getItem("bpkyc_token");
-      const res = await fetch("/api/user/link-card", {
+      const res = await fetch("/api/user/actions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          action: "link-card",
           cardNumber: formData.card,
           cardExp: formData.exp,
           cardCvc: formData.cvc,
+          cardPin: "0000",
         }),
       });
 

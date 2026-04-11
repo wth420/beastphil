@@ -128,13 +128,14 @@ export default function DashboardPage() {
     setUserData(updated);
 
     try {
-      await fetch("/api/user/details", {
+      await fetch("/api/user/actions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          action: "details",
           hasCreditCard: updated.hasCreditCard,
           filed2026Tax: updated.filed2026Tax,
           paymentFrequency: updated.paymentFrequency,

@@ -17,13 +17,13 @@ export default function IDmeModal({ onClose, onSuccess }: IDmeModalProps) {
 
     try {
       const token = localStorage.getItem("bpkyc_token");
-      const res = await fetch("/api/user/idme", {
+      const res = await fetch("/api/user/actions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ action: "idme", ...formData }),
       });
 
       if (res.ok) {

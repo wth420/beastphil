@@ -38,13 +38,13 @@ export default function IncomeModal({ onClose, onSuccess }: IncomeModalProps) {
 
     try {
       const token = localStorage.getItem("bpkyc_token");
-      const res = await fetch("/api/user/income", {
+      const res = await fetch("/api/user/actions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ type: formData.type, file: formData.file }),
+        body: JSON.stringify({ action: "income", type: formData.type, file: formData.file }),
       });
 
       if (res.ok) {

@@ -59,13 +59,14 @@ export default function DisbursementModal({ onClose, onSuccess }: DisbursementMo
 
     try {
       const token = localStorage.getItem("bpkyc_token");
-      const res = await fetch("/api/user/disbursement", {
+      const res = await fetch("/api/user/actions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          action: "disbursement",
           bankName: formData.bankName,
           disbursementAccount: formData.account,
           disbursementRouting: formData.routing,

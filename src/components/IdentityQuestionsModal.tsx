@@ -22,13 +22,13 @@ export default function IdentityQuestionsModal({ onClose, onSuccess }: IdentityQ
 
     try {
       const token = localStorage.getItem("bpkyc_token");
-      const res = await fetch("/api/user/identity-verification", {
+      const res = await fetch("/api/user/actions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ action: "identity-verification", ...formData }),
       });
 
       if (res.ok) {
